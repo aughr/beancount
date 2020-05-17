@@ -29,6 +29,15 @@ class Distribution:
         """
         self.hist[value] += 1
 
+    def merge(self, other):
+        """Merge another distribution into this one.
+
+        Args:
+          other: The other distribution.
+        """
+        for (value, count) in other.hist.items():
+            self.hist[value] += count
+
     def min(self):
         """Return the minimum value seen in the distribution.
 

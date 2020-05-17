@@ -430,6 +430,8 @@ def aggregate_options_map(options_map, src_options_map):
     for currency in src_options_map["commodities"]:
         commodities.add(currency)
 
+    options_map["dcontext"].merge(src_options_map["dcontext"])
+
 
 def _load(sources, log_timings, extra_validations, encoding):
     """Parse Beancount input, run its transformations and validate it.
