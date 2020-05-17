@@ -152,6 +152,12 @@ class _CurrencyContext:
         integer_digits = len(num_tuple.digits) + num_tuple.exponent
         self.integer_max = max(self.integer_max, integer_digits)
 
+    def merge(self, other):
+        if other.has_sign:
+            self.has_sign = True
+        self.integer_max = max(self.integer_max, other.integer_max)
+        self.fractional_dist.merge(other.fractional_dist)
+
     def get_fractional(self, precision):
         """
         Returns:
@@ -199,6 +205,15 @@ class DisplayContext:
           currency: An optional string, the currency this numbers applies to.
         """
         self.ccontexts[currency].update(number)
+
+    def merge(self, other):
+        """Merge another DisplayContext into this one.
+
+        Args:
+          other: The other DisplayContext.
+        """
+        for currency in other.ccontexts.keys():
+            self.ccontexts[currency].merge(other.ccontexts[currency])
 
     def quantize(self, number, currency, precision=Precision.MOST_COMMON):
         """Quantize the given number to the given precision.
